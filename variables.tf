@@ -9,11 +9,18 @@ variable "allowed_availability_zone_identifier" {
   default = ["a", "b"]
 }
 
+locals {
+  my_public_ip = "${data.external.myipaddr.result.ip}"
+}
+
+data "external" "myipaddr" {
+program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
+}
+
 variable "my_public_ip" {
   description = "Please replace this with your public IP address."
   type = string
-  default = "1.1.1.1"
-  #this needs to be automated, somehow I couldn't get it working so for now manually enter your IP here
+  default = ${var.my_public_ip}
 }
 
 variable "instance_type" {

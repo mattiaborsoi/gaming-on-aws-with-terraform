@@ -12,7 +12,6 @@ data "aws_ami" "windows_ami" {
   }
 }
 
-
 locals {
   availability_zone = "${var.region}${element(var.allowed_availability_zone_identifier, random_integer.az_id.result)}"
 }
@@ -63,7 +62,8 @@ resource "aws_security_group_rule" "vnc_ingress" {
   from_port = 5900
   to_port = 5900
   protocol = "tcp"
-  cidr_blocks = ["${var.my_public_ip}/32"]
+  cidr_blocks = ["0.0.0.0/0"] #change this to the below to allow only your IP to access 
+  #cidr_blocks = ["${var.my_public_ip}/32"] 
   security_group_id = aws_security_group.default.id
 }
 
